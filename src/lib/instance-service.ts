@@ -11,8 +11,13 @@ interface InstanceSyncObject extends SyncObject {
 }
 
 export class InstanceSyncService extends SyncService<InstanceSyncObject> {
-    constructor(private adapter: ioBroker.Adapter, database: firebase.database.Database, uid: string) {
-        super(adapter.log, database, uid, 'instance');
+    constructor(
+        private adapter: ioBroker.Adapter,
+        database: firebase.database.Database,
+        uid: string,
+        lang: ioBroker.Languages,
+    ) {
+        super(adapter.log, database, uid, 'instance', lang);
 
         this.adapter.log.info('InstanceService: initializing');
         this.upload();
@@ -43,8 +48,8 @@ export class InstanceSyncService extends SyncService<InstanceSyncObject> {
     private getInstanceObject(id: string, obj: ioBroker.Object): InstanceSyncObject {
         return {
             id: id,
-            name: obj.common.name.toString(),
-            title: obj.common.title || obj.common.titleLang?.en || 'notitle',
+            name: id.replace('system.adapter.', ''),
+            title: this.getTitle(obj),
             loglevel: obj.common.loglevel || 'unknown',
             host: obj.common.host || 'unknown',
             icon: obj.common.extIcon || null,

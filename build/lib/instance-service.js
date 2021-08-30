@@ -3,8 +3,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.InstanceSyncService = void 0;
 const sync_service_1 = require("./sync-service");
 class InstanceSyncService extends sync_service_1.SyncService {
-    constructor(adapter, database, uid) {
-        super(adapter.log, database, uid, 'instance');
+    constructor(adapter, database, uid, lang) {
+        super(adapter.log, database, uid, 'instance', lang);
         this.adapter = adapter;
         this.adapter.log.info('InstanceService: initializing');
         this.upload();
@@ -29,11 +29,10 @@ class InstanceSyncService extends sync_service_1.SyncService {
         });
     }
     getInstanceObject(id, obj) {
-        var _a;
         return {
             id: id,
-            name: obj.common.name.toString(),
-            title: obj.common.title || ((_a = obj.common.titleLang) === null || _a === void 0 ? void 0 : _a.en) || 'notitle',
+            name: id.replace('system.adapter.', ''),
+            title: this.getTitle(obj),
             loglevel: obj.common.loglevel || 'unknown',
             host: obj.common.host || 'unknown',
             icon: obj.common.extIcon || null,

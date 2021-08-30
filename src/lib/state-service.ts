@@ -22,8 +22,13 @@ export class StateSyncService extends SyncService<StateSyncObject> {
     private stateValues: Map<string, ioBroker.State> = new Map();
     private stateObjects: Map<string, ioBroker.Object> = new Map();
 
-    constructor(private adapter: ioBroker.Adapter, database: firebase.database.Database, uid: string) {
-        super(adapter.log, database, uid, 'state');
+    constructor(
+        private adapter: ioBroker.Adapter,
+        database: firebase.database.Database,
+        uid: string,
+        lang: ioBroker.Languages,
+    ) {
+        super(adapter.log, database, uid, 'state', lang);
 
         this.adapter.log.info('StateService: initializing');
 

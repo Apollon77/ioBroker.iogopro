@@ -6,10 +6,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.SyncService = void 0;
 const crypto_1 = __importDefault(require("crypto"));
 class SyncService {
-    constructor(log, database, uid, name) {
+    constructor(log, database, uid, name, lang) {
         this.log = log;
         this.uid = uid;
         this.name = name;
+        this.lang = lang;
         this.idSet = new Set();
         this.objectMap = new Map();
         this.database = database;
@@ -129,6 +130,23 @@ class SyncService {
             .catch((error) => {
             this.log.error('SyncService: ' + error.message);
         });
+    }
+    getName(obj) {
+        if (typeof obj.common.name === 'string') {
+            return obj.common.name;
+        }
+        else if (typeof obj.common.name === 'object') {
+            return obj.common.name[this.lang] || obj.common.name.en || '';
+        }
+        return '';
+    }
+    getTitle(obj) {
+        if (typeof obj.common.titleLang === 'object') {
+            return obj.common.titleLang[this.lang] || obj.common.title || '';
+        }
+        else {
+            return obj.common.title || '';
+        }
     }
     _getNode(id) {
         //replace unsupported character  . # [ ] $ /

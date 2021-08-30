@@ -3,8 +3,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AdapterSyncService = void 0;
 const sync_service_1 = require("./sync-service");
 class AdapterSyncService extends sync_service_1.SyncService {
-    constructor(adapter, database, uid) {
-        super(adapter.log, database, uid, 'adapter');
+    constructor(adapter, database, uid, lang) {
+        super(adapter.log, database, uid, 'adapter', lang);
         this.adapter = adapter;
         this.adapter.log.info('AdapterService: initializing');
         this.upload();
@@ -49,18 +49,15 @@ class AdapterSyncService extends sync_service_1.SyncService {
         });
     }
     getAdapterObject(id, obj) {
-        var _a, _b;
         return {
             id: id,
-            name: obj.common.name.toString(),
-            desc: (_a = obj.common.desc) === null || _a === void 0 ? void 0 : _a.en,
-            title: (_b = obj.common.titleLang) === null || _b === void 0 ? void 0 : _b.en,
+            name: id.replace('system.adapter.', ''),
+            title: this.getTitle(obj),
             availableVersion: obj.common.version || 'unknown',
             installedVersion: obj.common.installedVersion || 'unknown',
             mode: obj.common.mode || 'unknown',
             icon: obj.common.extIcon,
             enabled: obj.common.enabled || false,
-            type: obj.common.type || 'unknown',
             checksum: '',
             ts: 0,
         };

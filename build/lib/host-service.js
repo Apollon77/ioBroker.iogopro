@@ -3,8 +3,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.HostSyncService = void 0;
 const sync_service_1 = require("./sync-service");
 class HostSyncService extends sync_service_1.SyncService {
-    constructor(adapter, database, uid) {
-        super(adapter.log, database, uid, 'host');
+    constructor(adapter, database, uid, lang) {
+        super(adapter.log, database, uid, 'host', lang);
         this.adapter = adapter;
         this.adapter.log.info('HostService: initializing');
         this.upload();
@@ -62,8 +62,7 @@ class HostSyncService extends sync_service_1.SyncService {
     getHostObject(id, obj, alive) {
         return {
             id: id,
-            name: obj.common.name.toString(),
-            title: obj.common.title,
+            name: id.replace('system.host.', ''),
             installedVersion: obj.common.installedVersion || 'null',
             hostname: obj.common.hostname || 'null',
             platform: obj.native.os.platform || 'null',

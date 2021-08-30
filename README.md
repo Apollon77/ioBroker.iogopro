@@ -69,10 +69,10 @@ sendTo('iogo', {
 	### **WORK IN PROGRESS**
 -->
 
-### 0.0.3 (2021-08-30)
-* Testing release script
+### **WORK IN PROGRESS**
+* (nis) migrate current state from ioBroker.iogo
 
-### 0.0.2 (2021-08-29)
+### 0.0.1 (2021-08-29)
 * (nis) initial release
 
 ## License

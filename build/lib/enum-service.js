@@ -3,8 +3,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.EnumSyncService = void 0;
 const sync_service_1 = require("./sync-service");
 class EnumSyncService extends sync_service_1.SyncService {
-    constructor(adapter, database, uid) {
-        super(adapter.log, database, uid, 'enum');
+    constructor(adapter, database, uid, lang) {
+        super(adapter.log, database, uid, 'enum', lang);
         this.adapter = adapter;
         this.adapter.log.info('EnumService: initializing');
         this.upload();
@@ -44,7 +44,7 @@ class EnumSyncService extends sync_service_1.SyncService {
     getEnumObject(id, obj) {
         return {
             id: id,
-            name: obj.common.name.toString(),
+            name: this.getName(obj),
             members: obj.common.members,
             icon: obj.common.icon || '',
             color: obj.common.color || null,

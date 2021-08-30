@@ -17,6 +17,7 @@ export class SyncService<T extends SyncObject> {
         database: firebase.database.Database,
         protected uid: string,
         private name: string,
+        protected lang: ioBroker.Languages,
     ) {
         this.database = database;
     }
@@ -152,6 +153,23 @@ export class SyncService<T extends SyncObject> {
             .catch((error) => {
                 this.log.error('SyncService: ' + error.message);
             });
+    }
+
+    protected getName(obj: ioBroker.Object): string {
+        if (typeof obj.common.name === 'string') {
+            return obj.common.name;
+        } else if (typeof obj.common.name === 'object') {
+            return obj.common.name[this.lang] || obj.common.name.en || '';
+        }
+        return '';
+    }
+
+    protected getTitle(obj: ioBroker.Object): string {
+        if (typeof obj.common.titleLang === 'object') {
+            return obj.common.titleLang[this.lang] || obj.common.title || '';
+        } else {
+            return obj.common.title || '';
+        }
     }
 
     private _getNode(id: string): string {

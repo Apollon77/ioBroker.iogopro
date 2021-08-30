@@ -3,7 +3,6 @@ import { SyncObject, SyncService } from './sync-service';
 
 interface HostSyncObject extends SyncObject {
     name: string;
-    title: string;
     installedVersion: string;
     hostname: string;
     platform: string;
@@ -13,8 +12,13 @@ interface HostSyncObject extends SyncObject {
 }
 
 export class HostSyncService extends SyncService<HostSyncObject> {
-    constructor(private adapter: ioBroker.Adapter, database: firebase.database.Database, uid: string) {
-        super(adapter.log, database, uid, 'host');
+    constructor(
+        private adapter: ioBroker.Adapter,
+        database: firebase.database.Database,
+        uid: string,
+        lang: ioBroker.Languages,
+    ) {
+        super(adapter.log, database, uid, 'host', lang);
 
         this.adapter.log.info('HostService: initializing');
         this.upload();
@@ -76,8 +80,7 @@ export class HostSyncService extends SyncService<HostSyncObject> {
     private getHostObject(id: string, obj: ioBroker.Object, alive: boolean): HostSyncObject {
         return {
             id: id,
-            name: obj.common.name.toString(),
-            title: obj.common.title,
+            name: id.replace('system.host.', ''),
             installedVersion: obj.common.installedVersion || 'null',
             hostname: obj.common.hostname || 'null',
             platform: obj.native.os.platform || 'null',

@@ -1,6 +1,6 @@
 {
   "name": "iobroker.iogopro",
-  "version": "0.0.3",
+  "version": "0.0.1",
   "description": "iogopro",
   "author": {
     "name": "nis",
@@ -10,9 +10,10 @@
   "license": "MIT",
   "keywords": [
     "ioBroker",
-    "template",
-    "Smart Home",
-    "home automation"
+    "app",
+    "android",
+    "geofence",
+    "smartphone"
   ],
   "repository": {
     "type": "git",

@@ -59,12 +59,14 @@ class Iogopro extends utils.Adapter {
      * Is called when databases are connected and adapter received configuration.
      */
     async onReady() {
+        var _a;
         // Initialize your adapter here
         this.setState('info.connection', false, true);
         if (this.config.apikey == null) {
             this.log.warn('ApiKey is missing, please add apikey in config!');
             return;
         }
+        const language = ((_a = (await this.getForeignObjectAsync('system.config'))) === null || _a === void 0 ? void 0 : _a.common.language) || 'en';
         try {
             const response = await axios_1.default.post(consts_1.URL_APIKEY, { apikey: this.config.apikey });
             if (response.status != 200) {
@@ -92,7 +94,7 @@ class Iogopro extends utils.Adapter {
                     if (server) {
                         this.log.info('main: logged in successfully');
                         this.loggedIn = true;
-                        this.initServices(idTokenResult.claims.aid);
+                        this.initServices(idTokenResult.claims.aid, language);
                         this.setState('info.connection', true, true);
                         this.subscribeForeignStates('*');
                         this.subscribeForeignObjects('*');
@@ -179,16 +181,16 @@ class Iogopro extends utils.Adapter {
             }
         }
     }
-    initServices(aid) {
+    initServices(aid, lang) {
         this.log.info('main: initServices');
-        this.adapterService = new adapter_service_1.AdapterSyncService(this, this.app.database(consts_1.DATABASES.adapter), aid);
+        this.adapterService = new adapter_service_1.AdapterSyncService(this, this.app.database(consts_1.DATABASES.adapter), aid, lang);
         this.deviceService = new device_service_1.DeviceService(this, this.app.database(), aid);
-        this.enumService = new enum_service_1.EnumSyncService(this, this.app.database(consts_1.DATABASES.enum), aid);
-        this.hostService = new host_service_1.HostSyncService(this, this.app.database(consts_1.DATABASES.host), aid);
-        this.instanceService = new instance_service_1.InstanceSyncService(this, this.app.database(consts_1.DATABASES.instance), aid);
+        this.enumService = new enum_service_1.EnumSyncService(this, this.app.database(consts_1.DATABASES.enum), aid, lang);
+        this.hostService = new host_service_1.HostSyncService(this, this.app.database(consts_1.DATABASES.host), aid, lang);
+        this.instanceService = new instance_service_1.InstanceSyncService(this, this.app.database(consts_1.DATABASES.instance), aid, lang);
         this.locationService = new location_service_1.LocationService(this, this.app.database(), aid);
         this.messageService = new message_service_1.MessageSendService(this, this.app.database(consts_1.DATABASES.message), app_1.default.storage(), aid);
-        this.stateService = new state_service_1.StateSyncService(this, this.app.database(consts_1.DATABASES.state), aid);
+        this.stateService = new state_service_1.StateSyncService(this, this.app.database(consts_1.DATABASES.state), aid, lang);
     }
     destroyServices() {
         var _a, _b, _c;

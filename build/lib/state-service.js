@@ -3,8 +3,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.StateSyncService = void 0;
 const sync_service_1 = require("./sync-service");
 class StateSyncService extends sync_service_1.SyncService {
-    constructor(adapter, database, uid) {
-        super(adapter.log, database, uid, 'state');
+    constructor(adapter, database, uid, lang) {
+        super(adapter.log, database, uid, 'state', lang);
         this.adapter = adapter;
         this.stateTypes = new Map();
         this.stateValues = new Map();

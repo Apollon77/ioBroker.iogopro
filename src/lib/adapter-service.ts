@@ -3,19 +3,22 @@ import { SyncObject, SyncService } from './sync-service';
 
 interface AdapterSyncObject extends SyncObject {
     name: string;
-    desc: string;
     title: string;
     availableVersion: string;
     installedVersion: string;
     mode: string;
     icon: string;
     enabled: boolean;
-    type: string;
 }
 
 export class AdapterSyncService extends SyncService<AdapterSyncObject> {
-    constructor(private adapter: ioBroker.Adapter, database: firebase.database.Database, uid: string) {
-        super(adapter.log, database, uid, 'adapter');
+    constructor(
+        private adapter: ioBroker.Adapter,
+        database: firebase.database.Database,
+        uid: string,
+        lang: ioBroker.Languages,
+    ) {
+        super(adapter.log, database, uid, 'adapter', lang);
 
         this.adapter.log.info('AdapterService: initializing');
         this.upload();
@@ -77,15 +80,13 @@ export class AdapterSyncService extends SyncService<AdapterSyncObject> {
     private getAdapterObject(id: string, obj: ioBroker.Object): AdapterSyncObject {
         return {
             id: id,
-            name: obj.common.name.toString(),
-            desc: obj.common.desc?.en,
-            title: obj.common.titleLang?.en,
+            name: id.replace('system.adapter.', ''),
+            title: this.getTitle(obj),
             availableVersion: obj.common.version || 'unknown',
             installedVersion: obj.common.installedVersion || 'unknown',
             mode: obj.common.mode || 'unknown',
             icon: obj.common.extIcon,
             enabled: obj.common.enabled || false,
-            type: obj.common.type || 'unknown',
             checksum: '',
             ts: 0,
         };

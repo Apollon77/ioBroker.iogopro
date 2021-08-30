@@ -10,8 +10,13 @@ interface EnumSyncObject extends SyncObject {
 }
 
 export class EnumSyncService extends SyncService<EnumSyncObject> {
-    constructor(private adapter: ioBroker.Adapter, database: firebase.database.Database, uid: string) {
-        super(adapter.log, database, uid, 'enum');
+    constructor(
+        private adapter: ioBroker.Adapter,
+        database: firebase.database.Database,
+        uid: string,
+        lang: ioBroker.Languages,
+    ) {
+        super(adapter.log, database, uid, 'enum', lang);
 
         this.adapter.log.info('EnumService: initializing');
         this.upload();
@@ -54,7 +59,7 @@ export class EnumSyncService extends SyncService<EnumSyncObject> {
     private getEnumObject(id: string, obj: ioBroker.Object): EnumSyncObject {
         return {
             id: id,
-            name: obj.common.name.toString(),
+            name: this.getName(obj),
             members: obj.common.members,
             icon: obj.common.icon || '',
             color: obj.common.color || null,

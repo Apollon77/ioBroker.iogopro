@@ -57,6 +57,8 @@ class Iogopro extends utils.Adapter {
             return;
         }
 
+        const language = (await this.getForeignObjectAsync('system.config'))?.common.language || 'en';
+
         try {
             const response = await axios.post(URL_APIKEY, { apikey: this.config.apikey });
             if (response.status != 200) {
@@ -84,7 +86,7 @@ class Iogopro extends utils.Adapter {
                         if (server) {
                             this.log.info('main: logged in successfully');
                             this.loggedIn = true;
-                            this.initServices(idTokenResult.claims.aid);
+                            this.initServices(idTokenResult.claims.aid, language);
                             this.setState('info.connection', true, true);
                             this.subscribeForeignStates('*');
                             this.subscribeForeignObjects('*');
@@ -177,13 +179,13 @@ class Iogopro extends utils.Adapter {
         }
     }
 
-    private initServices(aid: string): void {
+    private initServices(aid: string, lang: ioBroker.Languages): void {
         this.log.info('main: initServices');
-        this.adapterService = new AdapterSyncService(this, this.app.database(DATABASES.adapter), aid);
+        this.adapterService = new AdapterSyncService(this, this.app.database(DATABASES.adapter), aid, lang);
         this.deviceService = new DeviceService(this, this.app.database(), aid);
-        this.enumService = new EnumSyncService(this, this.app.database(DATABASES.enum), aid);
-        this.hostService = new HostSyncService(this, this.app.database(DATABASES.host), aid);
-        this.instanceService = new InstanceSyncService(this, this.app.database(DATABASES.instance), aid);
+        this.enumService = new EnumSyncService(this, this.app.database(DATABASES.enum), aid, lang);
+        this.hostService = new HostSyncService(this, this.app.database(DATABASES.host), aid, lang);
+        this.instanceService = new InstanceSyncService(this, this.app.database(DATABASES.instance), aid, lang);
         this.locationService = new LocationService(this, this.app.database(), aid);
         this.messageService = new MessageSendService(
             this,
@@ -191,7 +193,7 @@ class Iogopro extends utils.Adapter {
             firebase.storage(),
             aid,
         );
-        this.stateService = new StateSyncService(this, this.app.database(DATABASES.state), aid);
+        this.stateService = new StateSyncService(this, this.app.database(DATABASES.state), aid, lang);
     }
 
     private destroyServices(): void {
