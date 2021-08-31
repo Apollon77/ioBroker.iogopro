@@ -21,6 +21,7 @@
   },
   "dependencies": {
     "@iobroker/adapter-core": "^2.5.1",
+    "axios": "^0.21.1",
     "firebase": "^8.10.0",
     "request": "2.88.2",
     "xhr2": "^0.2.1"
@@ -50,7 +51,6 @@
     "@types/sinon-chai": "^3.2.5",
     "@typescript-eslint/eslint-plugin": "^4.29.2",
     "@typescript-eslint/parser": "^4.29.2",
-    "axios": "^0.21.1",
     "chai": "^4.3.4",
     "chai-as-promised": "^7.1.1",
     "eslint": "^7.32.0",

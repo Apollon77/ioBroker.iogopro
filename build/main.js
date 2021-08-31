@@ -82,7 +82,8 @@ class Iogopro extends utils.Adapter {
             });
         }
         catch (error) {
-            this.log.error('main: your apikey is invalid');
+            this.log.error('main: your apikey is invalid error:' + error);
+            return;
         }
         app_1.default.auth().onAuthStateChanged((user) => {
             this.loggedIn = false;

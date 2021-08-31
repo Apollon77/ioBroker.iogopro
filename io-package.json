@@ -87,7 +87,7 @@
         ]
     },
     "native": {
-        "apikey": "test"
+        "apikey": null
     },
     "objects": [],
     "instanceObjects": [

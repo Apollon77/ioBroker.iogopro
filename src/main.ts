@@ -73,7 +73,8 @@ class Iogopro extends utils.Adapter {
                     return;
                 });
         } catch (error) {
-            this.log.error('main: your apikey is invalid');
+            this.log.error('main: your apikey is invalid error:' + error);
+            return;
         }
 
         firebase.auth().onAuthStateChanged((user) => {
