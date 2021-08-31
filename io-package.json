@@ -2,6 +2,7 @@
     "common": {
         "name": "iogopro",
         "version": "0.0.3",
+        "title":"ioGo PRO",
         "news": {
             "0.0.3": {
                 "en": "migrate current state from ioBroker.iogo",
