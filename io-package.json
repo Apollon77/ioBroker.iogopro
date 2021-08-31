@@ -1,8 +1,20 @@
 {
     "common": {
         "name": "iogopro",
-        "version": "0.0.1",
+        "version": "0.0.3",
         "news": {
+            "0.0.3": {
+                "en": "migrate current state from ioBroker.iogo",
+                "de": "Migrieren Sie den aktuellen Status von ioBroker.iogo",
+                "ru": "перенести текущее состояние из ioBroker.iogo",
+                "pt": "migre o estado atual de ioBroker.iogo",
+                "nl": "migreren huidige status van ioBroker.iogo",
+                "fr": "migrer l'état actuel de ioBroker.iogo",
+                "it": "migra lo stato attuale da ioBroker.iogo",
+                "es": "migrar el estado actual de ioBroker.iogo",
+                "pl": "migracja bieżącego stanu z ioBroker.iogo",
+                "zh-cn": "从 ioBroker.iogo 迁移当前状态"
+            },
             "0.0.1": {
                 "en": "initial release",
                 "de": "Erstveröffentlichung",

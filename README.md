@@ -69,7 +69,7 @@ sendTo('iogo', {
 	### **WORK IN PROGRESS**
 -->
 
-### **WORK IN PROGRESS**
+### 0.0.3 (2021-08-31)
 * (nis) migrate current state from ioBroker.iogo
 
 ### 0.0.1 (2021-08-29)
