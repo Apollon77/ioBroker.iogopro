@@ -21,8 +21,10 @@ import { LocationService } from './lib/location-service';
 import { MessageSendService } from './lib/message-service';
 import { StateSyncService } from './lib/state-service';
 
+const app = firebase.initializeApp(CONFIG);
+
 class Iogopro extends utils.Adapter {
-    private app = firebase.initializeApp(CONFIG);
+    //    private app = firebase.initializeApp(CONFIG);
     private loggedIn = false;
     private adapterService: AdapterSyncService | undefined;
     private deviceService: DeviceService | undefined;
@@ -65,8 +67,7 @@ class Iogopro extends utils.Adapter {
                 this.log.error('main:' + JSON.stringify(response.statusText));
                 return;
             }
-            firebase
-                .auth()
+            app.auth()
                 .signInWithCustomToken(response.data.token)
                 .catch((error) => {
                     this.log.error('Authentication: ' + error.code + ' # ' + error.message);
@@ -77,7 +78,7 @@ class Iogopro extends utils.Adapter {
             return;
         }
 
-        firebase.auth().onAuthStateChanged((user) => {
+        app.auth().onAuthStateChanged((user) => {
             this.loggedIn = false;
             this.log.debug('main: onAuthStateChanged');
             if (user && !user.isAnonymous) {
@@ -111,8 +112,7 @@ class Iogopro extends utils.Adapter {
         try {
             this.log.info('main: cleaning everything up...');
             this.destroyServices();
-            firebase
-                .auth()
+            app.auth()
                 .signOut()
                 .then(() => {
                     this.log.info('main: signed out');
@@ -182,19 +182,14 @@ class Iogopro extends utils.Adapter {
 
     private initServices(aid: string, lang: ioBroker.Languages): void {
         this.log.info('main: initServices');
-        this.adapterService = new AdapterSyncService(this, this.app.database(DATABASES.adapter), aid, lang);
-        this.deviceService = new DeviceService(this, this.app.database(), aid);
-        this.enumService = new EnumSyncService(this, this.app.database(DATABASES.enum), aid, lang);
-        this.hostService = new HostSyncService(this, this.app.database(DATABASES.host), aid, lang);
-        this.instanceService = new InstanceSyncService(this, this.app.database(DATABASES.instance), aid, lang);
-        this.locationService = new LocationService(this, this.app.database(), aid);
-        this.messageService = new MessageSendService(
-            this,
-            this.app.database(DATABASES.message),
-            firebase.storage(),
-            aid,
-        );
-        this.stateService = new StateSyncService(this, this.app.database(DATABASES.state), aid, lang);
+        this.adapterService = new AdapterSyncService(this, app.database(DATABASES.adapter), aid, lang);
+        this.deviceService = new DeviceService(this, app.database(), aid);
+        this.enumService = new EnumSyncService(this, app.database(DATABASES.enum), aid, lang);
+        this.hostService = new HostSyncService(this, app.database(DATABASES.host), aid, lang);
+        this.instanceService = new InstanceSyncService(this, app.database(DATABASES.instance), aid, lang);
+        this.locationService = new LocationService(this, app.database(), aid);
+        this.messageService = new MessageSendService(this, app.database(DATABASES.message), app.storage(), aid);
+        this.stateService = new StateSyncService(this, app.database(DATABASES.state), aid, lang);
     }
 
     private destroyServices(): void {

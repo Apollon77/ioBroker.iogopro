@@ -41,13 +41,14 @@ const instance_service_1 = require("./lib/instance-service");
 const location_service_1 = require("./lib/location-service");
 const message_service_1 = require("./lib/message-service");
 const state_service_1 = require("./lib/state-service");
+const app = app_1.default.initializeApp(consts_1.CONFIG);
 class Iogopro extends utils.Adapter {
     constructor(options = {}) {
         super({
             ...options,
             name: 'iogopro',
         });
-        this.app = app_1.default.initializeApp(consts_1.CONFIG);
+        //    private app = firebase.initializeApp(CONFIG);
         this.loggedIn = false;
         this.on('ready', this.onReady.bind(this));
         this.on('stateChange', this.onStateChange.bind(this));
@@ -73,8 +74,7 @@ class Iogopro extends utils.Adapter {
                 this.log.error('main:' + JSON.stringify(response.statusText));
                 return;
             }
-            app_1.default
-                .auth()
+            app.auth()
                 .signInWithCustomToken(response.data.token)
                 .catch((error) => {
                 this.log.error('Authentication: ' + error.code + ' # ' + error.message);
@@ -85,7 +85,7 @@ class Iogopro extends utils.Adapter {
             this.log.error('main: your apikey is invalid error:' + error);
             return;
         }
-        app_1.default.auth().onAuthStateChanged((user) => {
+        app.auth().onAuthStateChanged((user) => {
             this.loggedIn = false;
             this.log.debug('main: onAuthStateChanged');
             if (user && !user.isAnonymous) {
@@ -119,8 +119,7 @@ class Iogopro extends utils.Adapter {
         try {
             this.log.info('main: cleaning everything up...');
             this.destroyServices();
-            app_1.default
-                .auth()
+            app.auth()
                 .signOut()
                 .then(() => {
                 this.log.info('main: signed out');
@@ -184,14 +183,14 @@ class Iogopro extends utils.Adapter {
     }
     initServices(aid, lang) {
         this.log.info('main: initServices');
-        this.adapterService = new adapter_service_1.AdapterSyncService(this, this.app.database(consts_1.DATABASES.adapter), aid, lang);
-        this.deviceService = new device_service_1.DeviceService(this, this.app.database(), aid);
-        this.enumService = new enum_service_1.EnumSyncService(this, this.app.database(consts_1.DATABASES.enum), aid, lang);
-        this.hostService = new host_service_1.HostSyncService(this, this.app.database(consts_1.DATABASES.host), aid, lang);
-        this.instanceService = new instance_service_1.InstanceSyncService(this, this.app.database(consts_1.DATABASES.instance), aid, lang);
-        this.locationService = new location_service_1.LocationService(this, this.app.database(), aid);
-        this.messageService = new message_service_1.MessageSendService(this, this.app.database(consts_1.DATABASES.message), app_1.default.storage(), aid);
-        this.stateService = new state_service_1.StateSyncService(this, this.app.database(consts_1.DATABASES.state), aid, lang);
+        this.adapterService = new adapter_service_1.AdapterSyncService(this, app.database(consts_1.DATABASES.adapter), aid, lang);
+        this.deviceService = new device_service_1.DeviceService(this, app.database(), aid);
+        this.enumService = new enum_service_1.EnumSyncService(this, app.database(consts_1.DATABASES.enum), aid, lang);
+        this.hostService = new host_service_1.HostSyncService(this, app.database(consts_1.DATABASES.host), aid, lang);
+        this.instanceService = new instance_service_1.InstanceSyncService(this, app.database(consts_1.DATABASES.instance), aid, lang);
+        this.locationService = new location_service_1.LocationService(this, app.database(), aid);
+        this.messageService = new message_service_1.MessageSendService(this, app.database(consts_1.DATABASES.message), app.storage(), aid);
+        this.stateService = new state_service_1.StateSyncService(this, app.database(consts_1.DATABASES.state), aid, lang);
     }
     destroyServices() {
         var _a, _b, _c;
