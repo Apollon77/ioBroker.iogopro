@@ -24,7 +24,6 @@ import { StateSyncService } from './lib/state-service';
 const app = firebase.initializeApp(CONFIG);
 
 class Iogopro extends utils.Adapter {
-    //    private app = firebase.initializeApp(CONFIG);
     private loggedIn = false;
     private adapterService: AdapterSyncService | undefined;
     private deviceService: DeviceService | undefined;
@@ -40,6 +39,7 @@ class Iogopro extends utils.Adapter {
             ...options,
             name: 'iogopro',
         });
+
         this.on('ready', this.onReady.bind(this));
         this.on('stateChange', this.onStateChange.bind(this));
         this.on('objectChange', this.onObjectChange.bind(this));
@@ -54,7 +54,7 @@ class Iogopro extends utils.Adapter {
         // Initialize your adapter here
         this.setState('info.connection', false, true);
 
-        if (this.config.apikey == null) {
+        if (this.config.apikey == null || this.config.apikey.length < 20) {
             this.log.warn('ApiKey is missing, please add apikey in config!');
             return;
         }
@@ -74,7 +74,7 @@ class Iogopro extends utils.Adapter {
                     return;
                 });
         } catch (error) {
-            this.log.error('main: your apikey is invalid error:' + error);
+            this.log.error('main: signin with apikey: ' + error);
             return;
         }
 
