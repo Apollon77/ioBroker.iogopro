@@ -1,9 +1,21 @@
 {
     "common": {
         "name": "iogopro",
-        "version": "0.0.3",
-        "title":"ioGo PRO",
+        "version": "0.0.4",
+        "title": "ioGo PRO",
         "news": {
+            "0.0.4": {
+                "en": "initial version for testing",
+                "de": "erste Version zum Testen",
+                "ru": "начальная версия для тестирования",
+                "pt": "versão inicial para teste",
+                "nl": "eerste versie om te testen",
+                "fr": "version initiale à tester",
+                "it": "versione iniziale per il test",
+                "es": "versión inicial para prueba",
+                "pl": "wstępna wersja do testów",
+                "zh-cn": "用于测试的初始版本"
+            },
             "0.0.3": {
                 "en": "migrate current state from ioBroker.iogo",
                 "de": "Migrieren Sie den aktuellen Status von ioBroker.iogo",

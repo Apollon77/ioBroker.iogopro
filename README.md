@@ -69,7 +69,7 @@ sendTo('iogo', {
 	### **WORK IN PROGRESS**
 -->
 
-### **WORK IN PROGRESS**
+### 0.0.4 (2021-09-03)
 * (nis) initial version for testing
 
 ### 0.0.3 (2021-08-31)
