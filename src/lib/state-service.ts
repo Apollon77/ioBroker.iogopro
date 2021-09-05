@@ -127,14 +127,16 @@ export class StateSyncService extends SyncService<StateSyncObject> {
                 this.adapter.getForeignStates('*', (err, states) => {
                     for (const id in states) {
                         if (this.idSet.has(id)) {
-                            if (states[id] !== undefined) {
-                                const tmp = this.getState(states[id]);
+                            if (states[id] != null) {
                                 if (typeof states[id].val !== this.stateTypes.get(id)) {
                                     this.adapter.log.warn('StateService: value of state ' + id + ' has wrong type');
                                 }
+                                const tmp = this.getState(states[id]);
                                 this.stateValues.set(id, tmp);
                                 tmpList.set(id, this.getStateObject(id, this.stateObjects.get(id)!));
                                 this.adapter.log.debug('StateService: uploading ' + id);
+                            } else {
+                                this.adapter.log.warn('StateService: ' + id + ' is null');
                             }
                         }
                     }
