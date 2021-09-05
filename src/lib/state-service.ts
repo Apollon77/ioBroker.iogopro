@@ -157,7 +157,7 @@ export class StateSyncService extends SyncService<StateSyncObject> {
         } else if (this.stateTypes.get(id) == 'boolean') {
             newVal = val == 'true';
         }
-        if (id.indexOf('iogo.') === 1) {
+        if (id.indexOf('iogopro.') === 1) {
             this.adapter.setState(id, newVal);
         } else {
             this.adapter.setForeignState(id, newVal);
@@ -221,7 +221,7 @@ export class StateSyncService extends SyncService<StateSyncObject> {
     }
 
     private getState(state: ioBroker.State): ioBroker.State {
-        if (state.val != null) {
+        if (state != null && state.val != null) {
             state.val = state.val.toString();
         } else {
             state.val = 'null';

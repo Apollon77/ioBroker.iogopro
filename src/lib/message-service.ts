@@ -29,7 +29,7 @@ export class MessageSendService {
         this.adapter.getDevices((err, objects) => {
             objects?.forEach((value) => {
                 const user_name = value['common'].name.toString();
-                const did = value._id.replace('iogo.' + this.adapter.instance + '.', '');
+                const did = value._id.replace(this.adapter.namespace + '.', '');
                 this.userMap.set(user_name, did);
                 this.userMap.set(did, did);
                 this.adapter.log.debug('MessageService: initialized for device ' + did + '(' + user_name + ')');

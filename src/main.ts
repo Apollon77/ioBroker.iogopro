@@ -54,6 +54,10 @@ class Iogopro extends utils.Adapter {
         // Initialize your adapter here
         this.setState('info.connection', false, true);
 
+        this.log.warn('name:' + this.name);
+        this.log.warn('namespace:' + this.namespace);
+        this.log.warn('instance:' + this.instance);
+
         if (this.config.apikey == null || this.config.apikey.length < 20) {
             this.log.warn('ApiKey is missing, please add apikey in config!');
             return;

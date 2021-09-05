@@ -124,7 +124,7 @@ class StateSyncService extends sync_service_1.SyncService {
         else if (this.stateTypes.get(id) == 'boolean') {
             newVal = val == 'true';
         }
-        if (id.indexOf('iogo.') === 1) {
+        if (id.indexOf('iogopro.') === 1) {
             this.adapter.setState(id, newVal);
         }
         else {
@@ -185,7 +185,7 @@ class StateSyncService extends sync_service_1.SyncService {
         return null;
     }
     getState(state) {
-        if (state.val != null) {
+        if (state != null && state.val != null) {
             state.val = state.val.toString();
         }
         else {
