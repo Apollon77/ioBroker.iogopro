@@ -1,9 +1,21 @@
 {
     "common": {
         "name": "iogopro",
-        "version": "0.0.4",
+        "version": "0.0.5",
         "title": "ioGo PRO",
         "news": {
+            "0.0.5": {
+                "en": "bugfix in type check of states\nbugfix in push notification",
+                "de": "Bugfix in Typprüfung von Zuständen\nBugfix in Push-Benachrichtigung",
+                "ru": "исправление в проверке типов состояний\nисправление в push-уведомлении",
+                "pt": "correção de bug na verificação de tipo de estados\ncorreção de bug na notificação push",
+                "nl": "bugfix in typecontrole van toestanden\nbugfix in pushmelding",
+                "fr": "correction de bugs dans la vérification de type des états\ncorrection de bugs dans les notifications push",
+                "it": "bugfix nel controllo del tipo degli stati\nbugfix nella notifica push",
+                "es": "corrección de errores en tipo de verificación de estados\ncorrección de errores en notificaciones push",
+                "pl": "poprawka błędów w sprawdzaniu typów stanów\npoprawka błędu w powiadomieniu push",
+                "zh-cn": "状态类型检查中的错误修正\n推送通知中的错误修复"
+            },
             "0.0.4": {
                 "en": "initial version for testing",
                 "de": "erste Version zum Testen",
