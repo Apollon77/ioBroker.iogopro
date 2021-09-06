@@ -1,9 +1,21 @@
 {
     "common": {
         "name": "iogopro",
-        "version": "0.0.5",
+        "version": "0.0.6",
         "title": "ioGo PRO",
         "news": {
+            "0.0.6": {
+                "en": "bugfix push message versenden",
+                "de": "Bugfix Push-Nachricht versenden",
+                "ru": "версия push-сообщения bugfix",
+                "pt": "bugfix push message versenden",
+                "nl": "bugfix pushbericht verzenden",
+                "fr": "message push de correction de bug versenden",
+                "it": "bugfix messaggio push versenden",
+                "es": "corrección de errores mensaje push versenden",
+                "pl": "poprawka błędów wiadomości push versenden",
+                "zh-cn": "错误修正推送消息versenden"
+            },
             "0.0.5": {
                 "en": "bugfix in type check of states\nbugfix in push notification",
                 "de": "Bugfix in Typprüfung von Zuständen\nBugfix in Push-Benachrichtigung",
