@@ -86,6 +86,8 @@ class SyncService {
     syncValue(id, object) {
         const node = this._getNode(id);
         this.objectMap.set(node, object);
+        object.checksum = this.generateChecksum(id, object);
+        object.ts = Date.now();
         this.database
             .ref(this.uid + '/' + this.name + '/data/' + node)
             .set(object)
