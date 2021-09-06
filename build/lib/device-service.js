@@ -119,7 +119,7 @@ class DeviceService {
             if (!err && obj) {
                 this.adapter.log.debug('DeviceService: Objects for battery-charging (' + id + ') created');
                 this.adapter.setState(id + '.battery.charging', {
-                    val: data.batteryCharging,
+                    val: data.charging,
                     ack: true,
                 });
             }
@@ -167,7 +167,7 @@ class DeviceService {
         });
         this.adapter.setState(id + '.battery.level', { val: data.batteryLevel, ack: true });
         this.adapter.setState(id + '.battery.charging', {
-            val: data.batteryCharging,
+            val: data.charging,
             ack: true,
         });
         this.adapter.setState(id + '.alive', { val: data.alive, ack: true });
