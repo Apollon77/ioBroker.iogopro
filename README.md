@@ -69,6 +69,9 @@ sendTo('iogo', {
 	### **WORK IN PROGRESS**
 -->
 
+### **WORK IN PROGRESS**
+* (nis) bugfix push message versenden
+
 ### 0.0.5 (2021-09-06)
 * (nis) bugfix in type check of states
 * (nis) bugfix in push notification

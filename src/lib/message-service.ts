@@ -28,13 +28,13 @@ export class MessageSendService {
     private _init(): void {
         this.adapter.getDevices((err, objects) => {
             objects?.forEach((value) => {
-                const user_name = value['common'].name.toString();
+                const user_name = value.common.name.toString();
                 const did = value._id.replace(this.adapter.namespace + '.', '');
                 this.userMap.set(user_name, did);
-                this.userMap.set(did, did);
+                //this.userMap.set(did, did);
                 this.adapter.log.debug('MessageService: initialized for device ' + did + '(' + user_name + ')');
             });
-            this.adapter.log.info('DeviceService: initialized with ' + objects?.length + ' devices');
+            this.adapter.log.info('MessageService: initialized with ' + objects?.length + ' devices');
         });
 
         this.adapter.getForeignObjects('*', 'state', (err, objects) => {
@@ -147,16 +147,14 @@ export class MessageSendService {
         this.lastMessageTime = new Date().getTime();
         this.lastMessageText = json;
 
-        this.adapter.log.info('MessageService: prepare sending ' + JSON.stringify(obj));
-
         if (obj.message) {
             if (typeof obj.message === 'object') {
                 this.sendMessage(
                     obj.message.text,
                     obj.message.user,
-                    obj.message.title,
+                    obj.message.title || 'news',
                     obj.message.url,
-                    obj.message.expiry,
+                    obj.message.expiry || null,
                 );
             } else {
                 this.sendMessage(obj.message, null, 'news', null, null);
@@ -170,19 +168,7 @@ export class MessageSendService {
             return;
         }
 
-        if (text !== undefined && text !== null && typeof text !== 'object') {
-            text = text.toString();
-        }
-
-        if (text && typeof text === 'string' && text.match(/\.(jpg|png|jpeg|bmp)$/i) && fs.existsSync(text)) {
-            this.sendImage(text)
-                .then((downloadurl) => {
-                    this.sendMessageToUser(null, username, title, downloadurl, expiry);
-                })
-                .catch((error) => {
-                    this.adapter.log.error('MessageService: ' + error);
-                });
-        } else if (url && typeof url === 'string' && url.match(/\.(jpg|png|jpeg|bmp)$/i) && fs.existsSync(url)) {
+        if (url && typeof url === 'string' && url.match(/\.(jpg|png|jpeg|bmp)$/i) && fs.existsSync(url)) {
             this.sendImage(url)
                 .then((downloadurl) => {
                     this.sendMessageToUser(text, username, title, downloadurl, expiry);
@@ -223,23 +209,22 @@ export class MessageSendService {
     }
 
     private sendMessageToUser(
-        text: string | null,
+        text: string,
         username: string | null,
         title: string,
         url: string | null,
         expiry: number | null,
     ): void {
-        let u;
         const recipients = this.getFilteredUsers(username);
 
-        for (u in recipients) {
-            this._sendMessageHelper(recipients.get(u)!, text, title, url, expiry);
-        }
+        recipients.forEach((value) => {
+            this._sendMessageHelper(value, text, title, url, expiry);
+        });
     }
 
     private _sendMessageHelper(
         did: string,
-        body: string | null,
+        body: string,
         title: string,
         url: string | null,
         expiry: number | null,
