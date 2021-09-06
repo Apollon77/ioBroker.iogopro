@@ -67,7 +67,7 @@ class DeviceService {
             return;
         }
         // create device
-        this.adapter.setObjectNotExists(this.adapter.namespace + id, {
+        this.adapter.setObjectNotExists(id, {
             type: 'device',
             common: {
                 name: data.name,
@@ -75,7 +75,7 @@ class DeviceService {
             native: {},
         });
         // create states
-        this.adapter.setObjectNotExists(this.adapter.namespace + id + '.battery.level', {
+        this.adapter.setObjectNotExists(id + '.battery.level', {
             type: 'state',
             common: {
                 name: 'battery level',
@@ -92,7 +92,7 @@ class DeviceService {
         }, (err, obj) => {
             if (!err && obj) {
                 this.adapter.log.debug('DeviceService: Objects for battery-level (' + id + ') created');
-                this.adapter.setState(this.adapter.namespace + id + '.battery.level', {
+                this.adapter.setState(id + '.battery.level', {
                     val: data.batteryLevel,
                     ack: true,
                 });
@@ -104,7 +104,7 @@ class DeviceService {
                 this.adapter.log.debug('DeviceService: Objects (' + id + ') already exists');
             }
         });
-        this.adapter.setObjectNotExists(this.adapter.namespace + id + '.battery.charging', {
+        this.adapter.setObjectNotExists(id + '.battery.charging', {
             type: 'state',
             common: {
                 name: 'battery charging',
@@ -118,7 +118,7 @@ class DeviceService {
         }, (err, obj) => {
             if (!err && obj) {
                 this.adapter.log.debug('DeviceService: Objects for battery-charging (' + id + ') created');
-                this.adapter.setState(this.adapter.namespace + id + '.battery.charging', {
+                this.adapter.setState(id + '.battery.charging', {
                     val: data.batteryCharging,
                     ack: true,
                 });
@@ -130,7 +130,7 @@ class DeviceService {
                 this.adapter.log.debug('DeviceService: Objects (' + id + ') already exists');
             }
         });
-        this.adapter.setObjectNotExists(this.adapter.namespace + id + '.alive', {
+        this.adapter.setObjectNotExists(id + '.alive', {
             type: 'state',
             common: {
                 name: 'device status',
@@ -144,7 +144,7 @@ class DeviceService {
         }, (err, obj) => {
             if (!err && obj) {
                 this.adapter.log.debug('DeviceService: Objects for alive (' + id + ') created');
-                this.adapter.setState(this.adapter.namespace + id + '.alive', { val: data.alive, ack: true });
+                this.adapter.setState(id + '.alive', { val: data.alive, ack: true });
             }
             else if (err) {
                 this.adapter.log.error('DeviceService: setObjectNotExists: ' + err);
@@ -158,19 +158,19 @@ class DeviceService {
         if (id == null) {
             return;
         }
-        this.adapter.extendObject(this.adapter.namespace + id, {
+        this.adapter.extendObject(id, {
             type: 'device',
             common: {
                 name: data.name,
             },
             native: {},
         });
-        this.adapter.setState(this.adapter.namespace + id + '.battery.level', { val: data.batteryLevel, ack: true });
-        this.adapter.setState(this.adapter.namespace + id + '.battery.charging', {
+        this.adapter.setState(id + '.battery.level', { val: data.batteryLevel, ack: true });
+        this.adapter.setState(id + '.battery.charging', {
             val: data.batteryCharging,
             ack: true,
         });
-        this.adapter.setState(this.adapter.namespace + id + '.alive', { val: data.alive, ack: true });
+        this.adapter.setState(id + '.alive', { val: data.alive, ack: true });
     }
     destroy() {
         if (this.dbDevicesRef != undefined) {
