@@ -80,7 +80,7 @@ class SyncService {
     }
     hasUndefinedValues(object) {
         const entries = Object.entries(object);
-        for (var i = 0; i < entries.length; i++) {
+        for (let i = 0; i < entries.length; i++) {
             if (entries[i][1] === undefined) {
                 this.log.error('SyncService: ' + entries[i][0] + ' is missing for ' + this.name + ' ' + object.id);
                 return true;
