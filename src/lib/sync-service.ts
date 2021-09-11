@@ -69,6 +69,9 @@ export class SyncService<T extends SyncObject> {
         object.ts = Date.now();
 
         if (object.checksum !== this.objectMap.get(node)?.checksum) {
+            if (this.hasUndefinedValues(object)) {
+                return;
+            }
             this.objectMap.set(node, object);
             this.database
                 .ref(this.uid + '/' + this.name + '/data/' + node)
@@ -92,13 +95,16 @@ export class SyncService<T extends SyncObject> {
         }
     }
 
-    private checkUndefined(object: T): void {
-        Object.entries(object).forEach((item) => {
-            if (item[1] === undefined) {
-                this.log.error('SyncService: ' + item[0] + ' is missing for ' + this.name + ' ' + object.id);
-                return;
+    private hasUndefinedValues(object: T): boolean {
+        const entries = Object.entries(object);
+        for (let i = 0; i < entries.length; i++) {
+            if (entries[i][1] === undefined) {
+                this.log.error('SyncService: ' + entries[i][0] + ' is missing for ' + this.name + ' ' + object.id);
+                return true;
             }
-        });
+        }
+
+        return false; //!Object.entries(object).some((x) => x[1] === undefined);
     }
 
     syncValue(id: string, object: T): void {
@@ -107,16 +113,17 @@ export class SyncService<T extends SyncObject> {
 
         object.checksum = this.generateChecksum(id, object);
         object.ts = Date.now();
-
-        this.database
-            .ref(this.uid + '/' + this.name + '/data/' + node)
-            .set(object)
-            .then(() => {
-                this.log.silly('SyncService: data (' + this.name + ') ' + id + ' saved successfully');
-            })
-            .catch((error) => {
-                this.log.error('SyncService: ' + error.message);
-            });
+        if (!this.hasUndefinedValues(object)) {
+            this.database
+                .ref(this.uid + '/' + this.name + '/data/' + node)
+                .set(object)
+                .then(() => {
+                    this.log.silly('SyncService: data (' + this.name + ') ' + id + ' saved successfully');
+                })
+                .catch((error) => {
+                    this.log.error('SyncService: ' + error.message);
+                });
+        }
     }
 
     getObjectFromCache(id: string): T | undefined {
@@ -130,12 +137,14 @@ export class SyncService<T extends SyncObject> {
         objectList.forEach((value, key) => {
             const node = this._getNode(key);
             this.idSet.add(key);
-            localKeys[node] = true;
+
             value.checksum = this.generateChecksum(key, value);
             value.ts = Date.now();
             this.objectMap.set(node, value);
-            localData[node] = value;
-            this.checkUndefined(value);
+            if (!this.hasUndefinedValues(value)) {
+                localData[node] = value;
+                localKeys[node] = true;
+            }
         });
 
         this.database

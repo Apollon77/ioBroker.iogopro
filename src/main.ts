@@ -116,14 +116,14 @@ class Iogopro extends utils.Adapter {
                 .signOut()
                 .then(() => {
                     this.log.info('main: signed out');
+                    callback();
                 })
                 .catch((error) => {
                     this.log.error('main: ' + error);
+                    callback();
                 });
 
             this.setState('info.connection', false, true);
-
-            callback();
         } catch (e) {
             callback();
         }

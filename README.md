@@ -68,18 +68,7 @@ sendTo('iogo', {
 	Placeholder for the next version (at the beginning of the line):
 	### **WORK IN PROGRESS**
 -->
-
-### 0.0.6 (2021-09-06)
-* (nis) bugfix push message versenden
-
-### 0.0.5 (2021-09-06)
-* (nis) bugfix in type check of states
-* (nis) bugfix in push notification
-
-### 0.0.4 (2021-09-03)
-* (nis) initial version for testing
-
-### 0.0.3 (2021-08-31)
+### **WORK IN PROGRESS**
 * (nis) migrate current state from ioBroker.iogo
 
 ### 0.0.1 (2021-08-29)
