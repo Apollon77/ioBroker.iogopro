@@ -133,11 +133,22 @@
             {
                 "js-controller": ">=2.0.0"
             }
+        ],
+        "globalDependencies": [
+            {
+                "admin": ">=4.0.9"
+            }
         ]
     },
     "native": {
         "apikey": null
     },
+    "encryptedNative": [
+        "apikey"
+    ],
+    "protectedNative": [
+        "apikey"
+    ],
     "objects": [],
     "instanceObjects": [
         {
