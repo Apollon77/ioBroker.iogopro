@@ -1,9 +1,21 @@
 {
     "common": {
         "name": "iogopro",
-        "version": "0.2.0",
+        "version": "0.2.1",
         "title": "ioGo PRO",
         "news": {
+            "0.2.1": {
+                "en": "bugfix blocked enums",
+                "de": "Bugfix blockierte Enumerationen",
+                "ru": "исправление заблокированных перечислений",
+                "pt": "correção de bug enums bloqueados",
+                "nl": "bugfix geblokkeerde opsommingen",
+                "fr": "correction de bugs bloqués enums",
+                "it": "bugfix enum bloccati",
+                "es": "corrección de errores enumerados bloqueados",
+                "pl": "poprawka błędów zablokowanych wyliczeń",
+                "zh-cn": "错误修正阻止枚举"
+            },
             "0.2.0": {
                 "en": "sync states only when value has changed\nadded list of blocked enums to instance config",
                 "de": "Sync-Zustände nur, wenn sich der Wert geändert hat\nListe der blockierten Enumerationen zur Instanzkonfiguration hinzugefügt",

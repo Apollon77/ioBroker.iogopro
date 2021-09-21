@@ -69,7 +69,7 @@ sendTo('iogo', {
 	### **WORK IN PROGRESS**
 -->
 
-### **WORK IN PROGRESS**
+### 0.2.1 (2021-09-21)
 * (nis) bugfix blocked enums
 
 ### 0.2.0 (2021-09-21)
