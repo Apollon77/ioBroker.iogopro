@@ -184,7 +184,13 @@ class Iogopro extends utils.Adapter {
         this.log.info('main: initServices');
         this.adapterService = new AdapterSyncService(this, app.database(DATABASES.adapter), aid, lang);
         this.deviceService = new DeviceService(this, app.database(), aid);
-        this.enumService = new EnumSyncService(this, app.database(DATABASES.enum), aid, lang);
+        this.enumService = new EnumSyncService(
+            this,
+            app.database(DATABASES.enum),
+            aid,
+            lang,
+            this.config.blockedEnumIds,
+        );
         this.hostService = new HostSyncService(this, app.database(DATABASES.host), aid, lang);
         this.instanceService = new InstanceSyncService(this, app.database(DATABASES.instance), aid, lang);
         this.locationService = new LocationService(this, app.database(), aid);

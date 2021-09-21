@@ -82,9 +82,9 @@ export class StateSyncService extends SyncService<StateSyncObject> {
             const tmp = this.getState(state);
 
             if (
-                this.stateValues.has(id) ||
+                !this.stateValues.has(id) ||
                 this.stateValues.get(id)?.val !== tmp.val ||
-                state.from.indexOf('system.adapter.iogo') !== -1
+                state.from.indexOf(this.adapter.name) !== -1
             ) {
                 const sobj = this.stateObjects.get(id);
                 if (sobj) {

@@ -54,9 +54,9 @@ class StateSyncService extends sync_service_1.SyncService {
         var _a;
         if (this.idSet.has(id)) {
             const tmp = this.getState(state);
-            if (this.stateValues.has(id) ||
+            if (!this.stateValues.has(id) ||
                 ((_a = this.stateValues.get(id)) === null || _a === void 0 ? void 0 : _a.val) !== tmp.val ||
-                state.from.indexOf('system.adapter.iogo') !== -1) {
+                state.from.indexOf(this.adapter.name) !== -1) {
                 const sobj = this.stateObjects.get(id);
                 if (sobj) {
                     this.stateValues.set(id, tmp);

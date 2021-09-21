@@ -68,6 +68,9 @@ sendTo('iogo', {
 	Placeholder for the next version (at the beginning of the line):
 	### **WORK IN PROGRESS**
 -->
+### **WORK IN PROGRESS**
+* (nis) sync states only when value has changed
+* (nis) added list of blocked enums to instance config
 
 ### 0.1.0 (2021-09-12)
 * (nis) migrate current state from ioBroker.iogo

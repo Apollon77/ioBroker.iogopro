@@ -3,9 +3,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.EnumSyncService = void 0;
 const sync_service_1 = require("./sync-service");
 class EnumSyncService extends sync_service_1.SyncService {
-    constructor(adapter, database, uid, lang) {
+    constructor(adapter, database, uid, lang, blockedEnumIds) {
         super(adapter.log, database, uid, 'enum', lang);
         this.adapter = adapter;
+        this.blockedEnumIds = blockedEnumIds;
         this.adapter.log.info('EnumService: initializing');
         this.upload();
     }
@@ -14,7 +15,8 @@ class EnumSyncService extends sync_service_1.SyncService {
             super.deleteObject(id);
         }
         else if (obj.type === 'enum') {
-            if (id.indexOf('enum.rooms.') === 0 || id.indexOf('enum.functions.') === 0) {
+            if (!this.blockedEnumIds.includes(id) &&
+                (id.indexOf('enum.rooms.') === 0 || id.indexOf('enum.functions.') === 0)) {
                 super.syncObject(id, this.getEnumObject(id, obj));
             }
         }
@@ -24,7 +26,8 @@ class EnumSyncService extends sync_service_1.SyncService {
             this.adapter.getForeignObjects('*', 'state', (err, states) => {
                 const tmpList = new Map();
                 for (const id in objects) {
-                    if (id.indexOf('enum.rooms.') === 0 || id.indexOf('enum.functions.') === 0) {
+                    if (!this.blockedEnumIds.includes(id) &&
+                        (id.indexOf('enum.rooms.') === 0 || id.indexOf('enum.functions.') === 0)) {
                         const object = this.getEnumObject(id, objects[id]);
                         for (let i = object.members.length - 1; i >= 0; i--) {
                             const checkid = object.members[i];

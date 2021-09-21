@@ -15,6 +15,7 @@ export class EnumSyncService extends SyncService<EnumSyncObject> {
         database: firebase.database.Database,
         uid: string,
         lang: ioBroker.Languages,
+        private blockedEnumIds: string[],
     ) {
         super(adapter.log, database, uid, 'enum', lang);
 
@@ -26,7 +27,10 @@ export class EnumSyncService extends SyncService<EnumSyncObject> {
         if (obj == null) {
             super.deleteObject(id);
         } else if (obj.type === 'enum') {
-            if (id.indexOf('enum.rooms.') === 0 || id.indexOf('enum.functions.') === 0) {
+            if (
+                !this.blockedEnumIds.includes(id) &&
+                (id.indexOf('enum.rooms.') === 0 || id.indexOf('enum.functions.') === 0)
+            ) {
                 super.syncObject(id, this.getEnumObject(id, obj));
             }
         }
@@ -38,7 +42,10 @@ export class EnumSyncService extends SyncService<EnumSyncObject> {
                 const tmpList: Map<string, EnumSyncObject> = new Map();
 
                 for (const id in objects) {
-                    if (id.indexOf('enum.rooms.') === 0 || id.indexOf('enum.functions.') === 0) {
+                    if (
+                        !this.blockedEnumIds.includes(id) &&
+                        (id.indexOf('enum.rooms.') === 0 || id.indexOf('enum.functions.') === 0)
+                    ) {
                         const object = this.getEnumObject(id, objects[id]);
                         for (let i = object.members.length - 1; i >= 0; i--) {
                             const checkid = object.members[i];
