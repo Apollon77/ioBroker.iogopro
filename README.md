@@ -68,6 +68,10 @@ sendTo('iogo', {
 	Placeholder for the next version (at the beginning of the line):
 	### **WORK IN PROGRESS**
 -->
+
+### **WORK IN PROGRESS**
+* (nis) bugfix blocked enums
+
 ### 0.2.0 (2021-09-21)
 * (nis) sync states only when value has changed
 * (nis) added list of blocked enums to instance config

@@ -108,9 +108,9 @@ class Settings extends React.Component<SettingsProps, SettingsState> {
             return;
         }
         const blockedEnumIds: string[] = [...this.state.blockedEnumIds];
-        enums[index] = value;
+        blockedEnumIds[index] = value;
         this.props.onChange('blockedEnumIds', blockedEnumIds);
-        this.setState({ ...this.state, blockedEnumIds: enums });
+        this.setState({ ...this.state, blockedEnumIds: blockedEnumIds });
     }
 
     appendRow() {
