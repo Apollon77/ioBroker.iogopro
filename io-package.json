@@ -1,9 +1,21 @@
 {
     "common": {
         "name": "iogopro",
-        "version": "0.1.0",
+        "version": "0.2.0",
         "title": "ioGo PRO",
         "news": {
+            "0.2.0": {
+                "en": "sync states only when value has changed\nadded list of blocked enums to instance config",
+                "de": "Sync-Zustände nur, wenn sich der Wert geändert hat\nListe der blockierten Enumerationen zur Instanzkonfiguration hinzugefügt",
+                "ru": "синхронизация состояний только при изменении значения\nдобавлен список заблокированных перечислений в конфигурацию экземпляра",
+                "pt": "estados de sincronização apenas quando o valor mudou\nadicionou lista de enums bloqueados à configuração da instância",
+                "nl": "synchronisatiestatussen alleen wanneer de waarde is gewijzigd\nlijst met geblokkeerde opsommingen toegevoegd aan instantieconfiguratie",
+                "fr": "états de synchronisation uniquement lorsque la valeur a changé\najout de la liste des énumérations bloquées à la configuration de l'instance",
+                "it": "sincronizza gli stati solo quando il valore è cambiato\naggiunto elenco di enumerazioni bloccate alla configurazione dell'istanza",
+                "es": "sincroniza estados solo cuando el valor ha cambiado\nlista agregada de enumeraciones bloqueadas a la configuración de la instancia",
+                "pl": "synchronizuj stany tylko wtedy, gdy wartość się zmieniła\ndodano listę zablokowanych wyliczeń do konfiguracji instancji",
+                "zh-cn": "仅在值更改时同步状态\n将阻止的枚举列表添加到实例配置"
+            },
             "0.1.0": {
                 "en": "migrate current state from ioBroker.iogo",
                 "de": "Migrieren Sie den aktuellen Status von ioBroker.iogo",
@@ -153,8 +165,8 @@
         ]
     },
     "native": {
-        "apikey":"",
-        "blockedEnumIds":[]
+        "apikey": "",
+        "blockedEnumIds": []
     },
     "encryptedNative": [
         "apikey"
