@@ -1,9 +1,21 @@
 {
     "common": {
         "name": "iogopro",
-        "version": "0.2.1",
+        "version": "0.2.2",
         "title": "ioGo PRO",
         "news": {
+            "0.2.2": {
+                "en": "chage sync of enum member changes",
+                "de": "Ändern Sie die Synchronisierung von Enum-Mitgliederänderungen",
+                "ru": "изменить синхронизацию изменений членов перечисления",
+                "pt": "sincronização de mudança de alterações de membro enum",
+                "nl": "wijzig de synchronisatie van enum-lidwijzigingen",
+                "fr": "chage sync des changements de membre enum",
+                "it": "modifica la sincronizzazione delle modifiche ai membri enum",
+                "es": "cambiar la sincronización de los cambios de miembros enum",
+                "pl": "zmiana synchronizacji zmian członków wyliczenia",
+                "zh-cn": "更改枚举成员更改的同步"
+            },
             "0.2.1": {
                 "en": "bugfix blocked enums",
                 "de": "Bugfix blockierte Enumerationen",
