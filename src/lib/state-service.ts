@@ -21,6 +21,7 @@ export class StateSyncService extends SyncService<StateSyncObject> {
     private stateTypes: Map<string, string> = new Map();
     private stateValues: Map<string, ioBroker.State> = new Map();
     private stateObjects: Map<string, ioBroker.Object> = new Map();
+    private enumMembers: Map<string, string[]> = new Map();
 
     constructor(
         private adapter: ioBroker.Adapter,
@@ -68,13 +69,55 @@ export class StateSyncService extends SyncService<StateSyncObject> {
         }
 
         if (obj.type === 'enum' && (id.indexOf('enum.rooms.') === 0 || id.indexOf('enum.functions.') === 0)) {
-            this.idSet.clear();
-            this.stateTypes.clear();
-            this.stateValues.clear();
-            this.stateObjects.clear();
-            this.adapter.log.info('StateService: an anum has changed, start uploading all states');
-            this.upload();
+            this.adapter.log.warn('StateService: checking enum');
+            if (!this.enumMembers.has(id) && obj?.common?.members) {
+                this.adapter.log.warn('StateService: checking enum new mith members');
+                this.enumMembers.set(id, obj.common.members);
+                for (const key in obj.common.members) {
+                    this.adapter.log.warn('StateService: checking enum check:' + obj.common.members[key]);
+                    if (!this.idSet.has(obj.common.members[key])) {
+                        this.idSet.add(obj.common.members[key]);
+                        this.uploadSingle(obj.common.members[key]);
+                    }
+                }
+            } else if (
+                this.enumMembers.has(id) &&
+                this.enumMembers.get(id)?.length != obj?.common?.members?.length &&
+                obj?.common?.members
+            ) {
+                this.adapter.log.warn('StateService: checking enum mod mith members');
+
+                const diffNew = obj?.common?.members.filter((x) => !this.idSet.has(x));
+                for (const key in diffNew) {
+                    this.idSet.add(diffNew[key]);
+                    this.uploadSingle(diffNew[key]);
+                    this.adapter.log.warn('StateService: checking enum upload:' + diffNew[key]);
+                }
+
+                const members = this.enumMembers.get(id)?.filter((x) => !obj?.common?.members?.includes(x));
+                const diffDelete = members?.filter((x) => !this.hasEnums(x));
+
+                if (diffDelete) {
+                    this.adapter.log.warn('StateService: checking enum deletes:' + diffDelete.length);
+                    for (const key in diffDelete) {
+                        super.deleteObject(diffDelete[key]);
+                        this.stateObjects.delete(diffDelete[key]);
+                        this.adapter.log.warn('StateService: checking enum delete:' + diffDelete[key]);
+                    }
+                }
+
+                this.enumMembers.set(id, obj.common.members);
+            }
         }
+    }
+
+    private hasEnums(id: string): boolean {
+        this.enumMembers.forEach((value, _key) => {
+            if (value.includes(id)) {
+                return true;
+            }
+        });
+        return false;
     }
 
     onStateChange(id: string, state: ioBroker.State): void {
@@ -103,6 +146,31 @@ export class StateSyncService extends SyncService<StateSyncObject> {
         }
     }
 
+    private uploadSingle(id: string): void {
+        this.adapter.getForeignObject(id, (err, object) => {
+            if (object) {
+                this.stateTypes.set(id, object.common.type);
+                this.stateObjects.set(id, object);
+
+                this.adapter.getForeignState(id, (err, state) => {
+                    if (state != null) {
+                        if (typeof state.val !== this.stateTypes.get(id)) {
+                            this.adapter.log.warn('StateService: value of state ' + id + ' has wrong type');
+                        }
+                        this.stateValues.set(id, this.getState(state));
+                        const tmp = this.getStateObject(id, this.stateObjects.get(id)!);
+
+                        super.syncObject(id, tmp);
+
+                        this.adapter.log.debug('StateService: uploading ' + id);
+                    } else {
+                        this.adapter.log.warn('StateService: ' + id + ' is null');
+                    }
+                });
+            }
+        });
+    }
+
     private upload(): void {
         this.adapter.getForeignObjects('*', 'enum', (err, enums) => {
             for (const id in enums) {
@@ -111,6 +179,7 @@ export class StateSyncService extends SyncService<StateSyncObject> {
                     for (const key in object.common.members) {
                         this.idSet.add(object.common.members[key]);
                     }
+                    this.enumMembers.set(id, object.common.members);
                 }
             }
 

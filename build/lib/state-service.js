@@ -9,6 +9,7 @@ class StateSyncService extends sync_service_1.SyncService {
         this.stateTypes = new Map();
         this.stateValues = new Map();
         this.stateObjects = new Map();
+        this.enumMembers = new Map();
         this.adapter.log.info('StateService: initializing');
         this._initMe();
         this.upload();
@@ -27,6 +28,7 @@ class StateSyncService extends sync_service_1.SyncService {
         });
     }
     onObjectChange(id, obj) {
+        var _a, _b, _c, _d, _e, _f, _g;
         if (this.idSet.has(id)) {
             if (obj == null) {
                 super.deleteObject(id);
@@ -42,13 +44,47 @@ class StateSyncService extends sync_service_1.SyncService {
             return;
         }
         if (obj.type === 'enum' && (id.indexOf('enum.rooms.') === 0 || id.indexOf('enum.functions.') === 0)) {
-            this.idSet.clear();
-            this.stateTypes.clear();
-            this.stateValues.clear();
-            this.stateObjects.clear();
-            this.adapter.log.info('StateService: an anum has changed, start uploading all states');
-            this.upload();
+            this.adapter.log.warn('StateService: checking enum');
+            if (!this.enumMembers.has(id) && ((_a = obj === null || obj === void 0 ? void 0 : obj.common) === null || _a === void 0 ? void 0 : _a.members)) {
+                this.adapter.log.warn('StateService: checking enum new mith members');
+                this.enumMembers.set(id, obj.common.members);
+                for (const key in obj.common.members) {
+                    this.adapter.log.warn('StateService: checking enum check:' + obj.common.members[key]);
+                    if (!this.idSet.has(obj.common.members[key])) {
+                        this.idSet.add(obj.common.members[key]);
+                        this.uploadSingle(obj.common.members[key]);
+                    }
+                }
+            }
+            else if (this.enumMembers.has(id) && ((_b = this.enumMembers.get(id)) === null || _b === void 0 ? void 0 : _b.length) != ((_d = (_c = obj === null || obj === void 0 ? void 0 : obj.common) === null || _c === void 0 ? void 0 : _c.members) === null || _d === void 0 ? void 0 : _d.length) && ((_e = obj === null || obj === void 0 ? void 0 : obj.common) === null || _e === void 0 ? void 0 : _e.members)) {
+                this.adapter.log.warn('StateService: checking enum mod mith members');
+                let diffNew = (_f = obj === null || obj === void 0 ? void 0 : obj.common) === null || _f === void 0 ? void 0 : _f.members.filter(x => !this.idSet.has(x));
+                for (const key in diffNew) {
+                    this.idSet.add(diffNew[key]);
+                    this.uploadSingle(diffNew[key]);
+                    this.adapter.log.warn('StateService: checking enum upload:' + diffNew[key]);
+                }
+                let members = (_g = this.enumMembers.get(id)) === null || _g === void 0 ? void 0 : _g.filter(x => { var _a, _b; return !((_b = (_a = obj === null || obj === void 0 ? void 0 : obj.common) === null || _a === void 0 ? void 0 : _a.members) === null || _b === void 0 ? void 0 : _b.includes(x)); });
+                let diffDelete = members === null || members === void 0 ? void 0 : members.filter(x => !this.hasEnums(x));
+                if (diffDelete) {
+                    this.adapter.log.warn('StateService: checking enum deletes:' + diffDelete.length);
+                    for (const key in diffDelete) {
+                        super.deleteObject(diffDelete[key]);
+                        this.stateObjects.delete(diffDelete[key]);
+                        this.adapter.log.warn('StateService: checking enum delete:' + diffDelete[key]);
+                    }
+                }
+                this.enumMembers.set(id, obj.common.members);
+            }
         }
+    }
+    hasEnums(id) {
+        this.enumMembers.forEach((value, key) => {
+            if (value.includes(id)) {
+                return true;
+            }
+        });
+        return false;
     }
     onStateChange(id, state) {
         var _a;
@@ -74,6 +110,28 @@ class StateSyncService extends sync_service_1.SyncService {
             }
         }
     }
+    uploadSingle(id) {
+        this.adapter.getForeignObject(id, (err, object) => {
+            if (object) {
+                this.stateTypes.set(id, object.common.type);
+                this.stateObjects.set(id, object);
+                this.adapter.getForeignState(id, (err, state) => {
+                    if (state != null) {
+                        if (typeof state.val !== this.stateTypes.get(id)) {
+                            this.adapter.log.warn('StateService: value of state ' + id + ' has wrong type');
+                        }
+                        this.stateValues.set(id, this.getState(state));
+                        const tmp = this.getStateObject(id, this.stateObjects.get(id));
+                        super.syncObject(id, tmp);
+                        this.adapter.log.debug('StateService: uploading ' + id);
+                    }
+                    else {
+                        this.adapter.log.warn('StateService: ' + id + ' is null');
+                    }
+                });
+            }
+        });
+    }
     upload() {
         this.adapter.getForeignObjects('*', 'enum', (err, enums) => {
             for (const id in enums) {
@@ -82,6 +140,7 @@ class StateSyncService extends sync_service_1.SyncService {
                     for (const key in object.common.members) {
                         this.idSet.add(object.common.members[key]);
                     }
+                    this.enumMembers.set(id, object.common.members);
                 }
             }
             this.adapter.getForeignObjects('*', 'state', (err, objects) => {

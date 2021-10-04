@@ -68,6 +68,8 @@ sendTo('iogo', {
 	Placeholder for the next version (at the beginning of the line):
 	### **WORK IN PROGRESS**
 -->
+### **WORK IN PROGRESS**
+* (nis) chage sync of enum member changes
 
 ### 0.2.1 (2021-09-21)
 * (nis) bugfix blocked enums
