@@ -56,16 +56,18 @@ class StateSyncService extends sync_service_1.SyncService {
                     }
                 }
             }
-            else if (this.enumMembers.has(id) && ((_b = this.enumMembers.get(id)) === null || _b === void 0 ? void 0 : _b.length) != ((_d = (_c = obj === null || obj === void 0 ? void 0 : obj.common) === null || _c === void 0 ? void 0 : _c.members) === null || _d === void 0 ? void 0 : _d.length) && ((_e = obj === null || obj === void 0 ? void 0 : obj.common) === null || _e === void 0 ? void 0 : _e.members)) {
+            else if (this.enumMembers.has(id) &&
+                ((_b = this.enumMembers.get(id)) === null || _b === void 0 ? void 0 : _b.length) != ((_d = (_c = obj === null || obj === void 0 ? void 0 : obj.common) === null || _c === void 0 ? void 0 : _c.members) === null || _d === void 0 ? void 0 : _d.length) &&
+                ((_e = obj === null || obj === void 0 ? void 0 : obj.common) === null || _e === void 0 ? void 0 : _e.members)) {
                 this.adapter.log.warn('StateService: checking enum mod mith members');
-                let diffNew = (_f = obj === null || obj === void 0 ? void 0 : obj.common) === null || _f === void 0 ? void 0 : _f.members.filter(x => !this.idSet.has(x));
+                const diffNew = (_f = obj === null || obj === void 0 ? void 0 : obj.common) === null || _f === void 0 ? void 0 : _f.members.filter((x) => !this.idSet.has(x));
                 for (const key in diffNew) {
                     this.idSet.add(diffNew[key]);
                     this.uploadSingle(diffNew[key]);
                     this.adapter.log.warn('StateService: checking enum upload:' + diffNew[key]);
                 }
-                let members = (_g = this.enumMembers.get(id)) === null || _g === void 0 ? void 0 : _g.filter(x => { var _a, _b; return !((_b = (_a = obj === null || obj === void 0 ? void 0 : obj.common) === null || _a === void 0 ? void 0 : _a.members) === null || _b === void 0 ? void 0 : _b.includes(x)); });
-                let diffDelete = members === null || members === void 0 ? void 0 : members.filter(x => !this.hasEnums(x));
+                const members = (_g = this.enumMembers.get(id)) === null || _g === void 0 ? void 0 : _g.filter((x) => { var _a, _b; return !((_b = (_a = obj === null || obj === void 0 ? void 0 : obj.common) === null || _a === void 0 ? void 0 : _a.members) === null || _b === void 0 ? void 0 : _b.includes(x)); });
+                const diffDelete = members === null || members === void 0 ? void 0 : members.filter((x) => !this.hasEnums(x));
                 if (diffDelete) {
                     this.adapter.log.warn('StateService: checking enum deletes:' + diffDelete.length);
                     for (const key in diffDelete) {
@@ -79,7 +81,7 @@ class StateSyncService extends sync_service_1.SyncService {
         }
     }
     hasEnums(id) {
-        this.enumMembers.forEach((value, key) => {
+        this.enumMembers.forEach((value, _key) => {
             if (value.includes(id)) {
                 return true;
             }

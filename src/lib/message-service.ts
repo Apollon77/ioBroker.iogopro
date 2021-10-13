@@ -28,11 +28,12 @@ export class MessageSendService {
     private _init(): void {
         this.adapter.getDevices((err, objects) => {
             objects?.forEach((value) => {
-                const user_name = value.common.name.toString();
-                const did = value._id.replace(this.adapter.namespace + '.', '');
-                this.userMap.set(user_name, did);
-                //this.userMap.set(did, did);
-                this.adapter.log.debug('MessageService: initialized for device ' + did + '(' + user_name + ')');
+                if (value.common.name) {
+                    const user_name = value.common.name.toString();
+                    const did = value._id.replace(this.adapter.namespace + '.', '');
+                    this.userMap.set(user_name, did);
+                    this.adapter.log.debug('MessageService: initialized for device ' + did + '(' + user_name + ')');
+                }
             });
             this.adapter.log.info('MessageService: initialized with ' + objects?.length + ' devices');
         });
