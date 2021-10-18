@@ -30,10 +30,6 @@ class App extends GenericApp {
         super(props, extendedProps);
     }
 
-    onConnectionReady(): void {
-        // executed when connection is ready
-    }
-
     render() {
         if (!this.state.loaded) {
             return super.render();
@@ -46,7 +42,12 @@ class App extends GenericApp {
                 className="App"
                 style={{ background: theme.palette.background.default, color: theme.palette.text.primary }}
             >
-                <Settings native={this.state.native} onChange={(attr, value) => this.updateNativeValue(attr, value)} />
+                <Settings
+                    native={this.state.native}
+                    socket={this.socket}
+                    systemConfig={this.getSystemConfig()}
+                    onChange={(attr, value) => this.updateNativeValue(attr, value)}
+                />
                 {this.renderError()}
                 {this.renderToast()}
                 {this.renderSaveCloseButtons()}

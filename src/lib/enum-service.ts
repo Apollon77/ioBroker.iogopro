@@ -7,6 +7,7 @@ interface EnumSyncObject extends SyncObject {
     icon: string;
     color: string;
     type: string;
+    admin: boolean;
 }
 
 export class EnumSyncService extends SyncService<EnumSyncObject> {
@@ -16,10 +17,14 @@ export class EnumSyncService extends SyncService<EnumSyncObject> {
         uid: string,
         lang: ioBroker.Languages,
         private blockedEnumIds: string[],
+        private adminEnumIds: string[],
     ) {
         super(adapter.log, database, uid, 'enum', lang);
 
         this.adapter.log.info('EnumService: initializing');
+        this.adapter.log.debug('EnumService: blocked enums: ' + JSON.stringify(this.blockedEnumIds));
+        this.adapter.log.debug('EnumService: admin-only enums: ' + JSON.stringify(this.adminEnumIds));
+
         this.upload();
     }
 
@@ -71,6 +76,7 @@ export class EnumSyncService extends SyncService<EnumSyncObject> {
             icon: obj.common.icon || '',
             color: obj.common.color || null,
             type: id.indexOf('enum.rooms.') === 0 ? 'room' : 'function',
+            admin: this.adminEnumIds.includes(id),
             checksum: '',
             ts: 0,
         };

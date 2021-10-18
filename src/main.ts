@@ -190,6 +190,7 @@ class Iogopro extends utils.Adapter {
             aid,
             lang,
             this.config.blockedEnumIds,
+            this.config.adminEnumIds,
         );
         this.hostService = new HostSyncService(this, app.database(DATABASES.host), aid, lang);
         this.instanceService = new InstanceSyncService(this, app.database(DATABASES.instance), aid, lang);

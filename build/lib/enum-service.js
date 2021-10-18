@@ -3,11 +3,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.EnumSyncService = void 0;
 const sync_service_1 = require("./sync-service");
 class EnumSyncService extends sync_service_1.SyncService {
-    constructor(adapter, database, uid, lang, blockedEnumIds) {
+    constructor(adapter, database, uid, lang, blockedEnumIds, adminEnumIds) {
         super(adapter.log, database, uid, 'enum', lang);
         this.adapter = adapter;
         this.blockedEnumIds = blockedEnumIds;
+        this.adminEnumIds = adminEnumIds;
         this.adapter.log.info('EnumService: initializing');
+        this.adapter.log.debug('EnumService: blocked enums: ' + JSON.stringify(this.blockedEnumIds));
+        this.adapter.log.debug('EnumService: admin-only enums: ' + JSON.stringify(this.adminEnumIds));
         this.upload();
     }
     onObjectChange(id, obj) {
@@ -52,6 +55,7 @@ class EnumSyncService extends sync_service_1.SyncService {
             icon: obj.common.icon || '',
             color: obj.common.color || null,
             type: id.indexOf('enum.rooms.') === 0 ? 'room' : 'function',
+            admin: this.adminEnumIds.includes(id),
             checksum: '',
             ts: 0,
         };

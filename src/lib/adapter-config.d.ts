@@ -6,6 +6,7 @@ declare global {
         interface AdapterConfig {
             apikey: string;
             blockedEnumIds: string[];
+            adminEnumIds: string[];
         }
     }
 }

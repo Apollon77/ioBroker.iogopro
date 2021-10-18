@@ -190,7 +190,8 @@
     },
     "native": {
         "apikey": "",
-        "blockedEnumIds": []
+        "blockedEnumIds": [],
+        "adminEnumIds": []
     },
     "encryptedNative": [
         "apikey"
