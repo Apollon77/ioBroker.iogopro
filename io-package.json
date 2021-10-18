@@ -1,9 +1,21 @@
 {
     "common": {
         "name": "iogopro",
-        "version": "0.2.3",
+        "version": "0.2.4",
         "title": "ioGo PRO",
         "news": {
+            "0.2.4": {
+                "en": "simplify admin ui for blocked enums",
+                "de": "Admin-UI für blockierte Enumerationen vereinfachen",
+                "ru": "упростить интерфейс администратора для заблокированных перечислений",
+                "pt": "simplificar a interface do usuário administrativa para enums bloqueados",
+                "nl": "vereenvoudig de beheerdersinterface voor geblokkeerde opsommingen",
+                "fr": "simplifier l'interface utilisateur d'administration pour les énumérations bloquées",
+                "it": "semplifica l'interfaccia utente di amministrazione per le enumerazioni bloccate",
+                "es": "simplificar la interfaz de usuario de administración para enumeraciones bloqueadas",
+                "pl": "uprościć interfejs administratora dla zablokowanych wyliczeń",
+                "zh-cn": "简化被阻止枚举的管理用户界面"
+            },
             "0.2.3": {
                 "en": "simplify admin ui for blocked enums",
                 "de": "Admin-UI für blockierte Enumerationen vereinfachen",
