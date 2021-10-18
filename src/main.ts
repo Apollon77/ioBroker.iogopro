@@ -144,7 +144,6 @@ class Iogopro extends utils.Adapter {
         this.enumService?.onObjectChange(id, obj);
         this.hostService?.onObjectChange(id, obj);
         this.instanceService?.onObjectChange(id, obj);
-        this.messageService?.onObjectChange(id, obj);
         this.stateService?.onObjectChange(id, obj);
     }
 
@@ -157,7 +156,6 @@ class Iogopro extends utils.Adapter {
         }
 
         this.deviceService?.onStateChange(id, state);
-        this.messageService?.onStateChange(id, state);
         this.stateService?.onStateChange(id, state);
 
         if (this.deviceService?.isAnyDeviceAlive()) {

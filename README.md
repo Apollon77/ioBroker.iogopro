@@ -69,7 +69,7 @@ sendTo('iogo', {
 	### **WORK IN PROGRESS**
 -->
 
-### 0.2.3 (2021-10-18)
+### **WORK IN PROGRESS**
 * (nis) simplify admin ui for blocked enums
 
 ### 0.2.2 (2021-10-04)

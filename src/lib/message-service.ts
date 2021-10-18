@@ -2,18 +2,10 @@ import firebase from 'firebase/app';
 import fs from 'fs';
 import path from 'path';
 
-interface ObjectCache {
-    type: ioBroker.CommonType | undefined;
-    states: string | Record<string, string> | undefined;
-    alias: string;
-}
-
 export class MessageSendService {
     private userMap: Map<string, string> = new Map();
     private lastMessageTime = 0;
     private lastMessageText = '';
-    private objectMap: Map<string, ObjectCache> = new Map();
-    private stateValMap: Map<string, ioBroker.StateValue> = new Map();
 
     constructor(
         private adapter: ioBroker.Adapter,
@@ -37,95 +29,6 @@ export class MessageSendService {
             });
             this.adapter.log.info('MessageService: initialized with ' + objects?.length + ' devices');
         });
-
-        this.adapter.getForeignObjects('*', 'state', (err, objects) => {
-            for (const id in objects) {
-                const obj = objects[id];
-                if (
-                    obj &&
-                    obj.common &&
-                    obj.common.custom &&
-                    obj.common.custom[this.adapter.namespace] &&
-                    obj.common.custom[this.adapter.namespace].enabled
-                ) {
-                    const cache: ObjectCache = {
-                        type: obj.common.type,
-                        states: obj.common.states,
-                        alias: this.getAliasName(obj),
-                    };
-                    this.objectMap.set(obj.common.custom[this.adapter.namespace], cache);
-                    this.adapter.log.debug('MessageService: custom found for id ' + id);
-                }
-            }
-        });
-    }
-
-    onObjectChange(id: string, obj: ioBroker.Object | null | undefined): void {
-        if (obj == null) {
-            return;
-        }
-
-        if (
-            obj &&
-            obj.type === 'state' &&
-            obj.common &&
-            obj.common.custom &&
-            obj.common.custom[this.adapter.namespace] &&
-            obj.common.custom[this.adapter.namespace].enabled
-        ) {
-            if (id.indexOf('system.adapter.') === 0) {
-                this.adapter.log.warn('MessageService: technical states are not allowed for push notification:' + id);
-                return;
-            }
-            this.adapter.log.debug('MessageService: command added for id ' + id);
-            const cache: ObjectCache = {
-                type: obj.common.type,
-                states: obj.common.states,
-                alias: this.getAliasName(obj),
-            };
-            this.objectMap.set(id, cache);
-        } else if (this.objectMap.has(id)) {
-            this.adapter.log.debug('MessageService: command removed for id ' + id);
-            this.objectMap.delete(id);
-        }
-    }
-
-    onStateChange(id: string, state: ioBroker.State): void {
-        if (state && state.ack && this.objectMap.has(id)) {
-            if (this.stateValMap.has(id) || this.stateValMap.get(id) !== state.val) {
-                this.stateValMap.set(id, state.val);
-
-                this.adapter.log.debug('MessageService: send message for state with id ' + id);
-                this.sendMessage(this.getReportStatus(id, state), null, 'news', null, null);
-            }
-        }
-    }
-
-    private getReportStatus(id: string, state: ioBroker.State): string {
-        const obj = this.objectMap.get(id);
-        if (!obj) {
-            return '';
-        } else if (obj.type === 'boolean') {
-            return `${this.objectMap.get(id)?.alias} => ${state.val ? 'ON' : 'OFF'}`;
-        } else {
-            const val: string = state.val?.toString() || '';
-            if (obj.states && typeof obj.states == 'object' && obj.states[val] !== undefined) {
-                state.val = obj.states[val];
-            }
-            return `${this.objectMap.get(id)?.alias} => ${state.val}`;
-        }
-    }
-
-    private getAliasName(obj: ioBroker.Object): string {
-        if (obj && obj.common && obj.common.custom && obj.common.custom[this.adapter.namespace].alias) {
-            return obj.common.custom[this.adapter.namespace].alias;
-        } else {
-            let name: string = obj.common.name.toString();
-            if (typeof name === 'object') {
-                name = name['en'];
-            }
-            return name || obj._id;
-        }
     }
 
     send(obj: ioBroker.Message): void {

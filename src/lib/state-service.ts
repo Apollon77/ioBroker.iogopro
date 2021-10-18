@@ -69,12 +69,9 @@ export class StateSyncService extends SyncService<StateSyncObject> {
         }
 
         if (obj.type === 'enum' && (id.indexOf('enum.rooms.') === 0 || id.indexOf('enum.functions.') === 0)) {
-            this.adapter.log.warn('StateService: checking enum');
             if (!this.enumMembers.has(id) && obj?.common?.members) {
-                this.adapter.log.warn('StateService: checking enum new mith members');
                 this.enumMembers.set(id, obj.common.members);
                 for (const key in obj.common.members) {
-                    this.adapter.log.warn('StateService: checking enum check:' + obj.common.members[key]);
                     if (!this.idSet.has(obj.common.members[key])) {
                         this.idSet.add(obj.common.members[key]);
                         this.uploadSingle(obj.common.members[key]);
@@ -85,24 +82,19 @@ export class StateSyncService extends SyncService<StateSyncObject> {
                 this.enumMembers.get(id)?.length != obj?.common?.members?.length &&
                 obj?.common?.members
             ) {
-                this.adapter.log.warn('StateService: checking enum mod mith members');
-
                 const diffNew = obj?.common?.members.filter((x) => !this.idSet.has(x));
                 for (const key in diffNew) {
                     this.idSet.add(diffNew[key]);
                     this.uploadSingle(diffNew[key]);
-                    this.adapter.log.warn('StateService: checking enum upload:' + diffNew[key]);
                 }
 
                 const members = this.enumMembers.get(id)?.filter((x) => !obj?.common?.members?.includes(x));
                 const diffDelete = members?.filter((x) => !this.hasEnums(x));
 
                 if (diffDelete) {
-                    this.adapter.log.warn('StateService: checking enum deletes:' + diffDelete.length);
                     for (const key in diffDelete) {
                         super.deleteObject(diffDelete[key]);
                         this.stateObjects.delete(diffDelete[key]);
-                        this.adapter.log.warn('StateService: checking enum delete:' + diffDelete[key]);
                     }
                 }
 
@@ -137,7 +129,6 @@ export class StateSyncService extends SyncService<StateSyncObject> {
                         this.adapter.log.warn('StateService: state ' + id + ' is unknown. Nothing updated');
                         return;
                     }
-                    this.adapter.log.debug('StateService: sent new value for state id ' + id);
                     super.syncValue(id, obj);
                 }
             } else {

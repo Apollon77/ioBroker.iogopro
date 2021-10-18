@@ -140,7 +140,7 @@ class Iogopro extends utils.Adapter {
     //  * Is called if a subscribed object changes
     //  */
     onObjectChange(id, obj) {
-        var _a, _b, _c, _d, _e, _f, _g;
+        var _a, _b, _c, _d, _e, _f;
         if (!this.loggedIn) {
             return;
         }
@@ -149,25 +149,23 @@ class Iogopro extends utils.Adapter {
         (_c = this.enumService) === null || _c === void 0 ? void 0 : _c.onObjectChange(id, obj);
         (_d = this.hostService) === null || _d === void 0 ? void 0 : _d.onObjectChange(id, obj);
         (_e = this.instanceService) === null || _e === void 0 ? void 0 : _e.onObjectChange(id, obj);
-        (_f = this.messageService) === null || _f === void 0 ? void 0 : _f.onObjectChange(id, obj);
-        (_g = this.stateService) === null || _g === void 0 ? void 0 : _g.onObjectChange(id, obj);
+        (_f = this.stateService) === null || _f === void 0 ? void 0 : _f.onObjectChange(id, obj);
     }
     /**
      * Is called if a subscribed state changes
      */
     onStateChange(id, state) {
-        var _a, _b, _c, _d, _e, _f;
+        var _a, _b, _c, _d, _e;
         if (!this.loggedIn || state == null) {
             return;
         }
         (_a = this.deviceService) === null || _a === void 0 ? void 0 : _a.onStateChange(id, state);
-        (_b = this.messageService) === null || _b === void 0 ? void 0 : _b.onStateChange(id, state);
-        (_c = this.stateService) === null || _c === void 0 ? void 0 : _c.onStateChange(id, state);
-        if ((_d = this.deviceService) === null || _d === void 0 ? void 0 : _d.isAnyDeviceAlive()) {
-            (_e = this.hostService) === null || _e === void 0 ? void 0 : _e.onStateChange(id, state);
+        (_b = this.stateService) === null || _b === void 0 ? void 0 : _b.onStateChange(id, state);
+        if ((_c = this.deviceService) === null || _c === void 0 ? void 0 : _c.isAnyDeviceAlive()) {
+            (_d = this.hostService) === null || _d === void 0 ? void 0 : _d.onStateChange(id, state);
         }
         if (id === 'admin.0.info.updatesJson') {
-            (_f = this.adapterService) === null || _f === void 0 ? void 0 : _f.syncAvailableVersion(state.val);
+            (_e = this.adapterService) === null || _e === void 0 ? void 0 : _e.syncAvailableVersion(state.val);
         }
     }
     onMessage(obj) {
