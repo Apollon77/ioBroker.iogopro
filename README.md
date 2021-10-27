@@ -69,6 +69,9 @@ sendTo('iogo', {
 	### **WORK IN PROGRESS**
 -->
 
+### **WORK IN PROGRESS**
+* (nis) Automatisches Löschen von Locations
+
 ### 0.2.4 (2021-10-18)
 * (nis) simplify admin ui for blocked enums
 

@@ -14,7 +14,7 @@ export class DeviceService {
     private _init(): void {
         this.adapter.getDevices((err, objects) => {
             objects?.forEach((value) => {
-                const deviceId = value._id;
+                const deviceId = value._id.substr(value._id.lastIndexOf('.') + 1);
                 this.idSet.add(deviceId);
                 this.adapter.log.debug('DeviceService: device ' + deviceId + ' initialized');
             });
