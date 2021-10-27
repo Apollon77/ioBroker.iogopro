@@ -69,7 +69,7 @@ sendTo('iogo', {
 	### **WORK IN PROGRESS**
 -->
 
-### **WORK IN PROGRESS**
+### 0.2.5 (2021-10-27)
 * (nis) Automatisches Löschen von Locations
 
 ### 0.2.4 (2021-10-18)

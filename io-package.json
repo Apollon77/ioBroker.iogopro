@@ -1,9 +1,21 @@
 {
     "common": {
         "name": "iogopro",
-        "version": "0.2.4",
+        "version": "0.2.5",
         "title": "ioGo PRO",
         "news": {
+            "0.2.5": {
+                "en": "Automatisches Löschen von Locations",
+                "de": "Automatisches Löschen von Locations",
+                "ru": "Automatisches Löschen von Locations",
+                "pt": "Localizações de Löschen von de automatismos",
+                "nl": "Automatisches Löschen van Locations",
+                "fr": "Automatisches Löschen von Sites",
+                "it": "Automatisches Löschen von Locations",
+                "es": "Ubicaciones de Automatisches Löschen von",
+                "pl": "Automatisches Löschen von Locations",
+                "zh-cn": "Automatisches Löschen von Locations"
+            },
             "0.2.4": {
                 "en": "simplify admin ui for blocked enums",
                 "de": "Admin-UI für blockierte Enumerationen vereinfachen",
