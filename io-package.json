@@ -1,9 +1,21 @@
 {
     "common": {
         "name": "iogopro",
-        "version": "0.2.5",
+        "version": "0.2.6",
         "title": "ioGo PRO",
         "news": {
+            "0.2.6": {
+                "en": "Add sentry for central crash logging",
+                "de": "Wächter für zentrale Absturzprotokollierung hinzufügen",
+                "ru": "Добавить часового для центрального журнала сбоев",
+                "pt": "Adicionar sentinela para registro de travamento central",
+                "nl": "Een schildwacht toevoegen voor centrale crashregistratie",
+                "fr": "Ajouter une sentinelle pour la journalisation centrale des incidents",
+                "it": "Aggiungi una sentinella per la registrazione centralizzata degli arresti anomali",
+                "es": "Agregar centinela para el registro central de fallas",
+                "pl": "Dodaj wartownika do centralnego rejestrowania awarii",
+                "zh-cn": "为中央崩溃日志添加哨兵"
+            },
             "0.2.5": {
                 "en": "Automatisches Löschen von Locations",
                 "de": "Automatisches Löschen von Locations",
