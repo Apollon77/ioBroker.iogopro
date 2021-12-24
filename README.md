@@ -73,6 +73,9 @@ sendTo('iogo', {
 	### **WORK IN PROGRESS**
 -->
 
+### **WORK IN PROGRESS**
+* (nis) Add sentry for central crash logging
+
 ### 0.2.5 (2021-10-27)
 * (nis) Automatisches Löschen von Locations
 

@@ -222,7 +222,12 @@
             {
                 "admin": ">=4.0.9"
             }
-        ]
+        ],
+        "plugins": {
+            "sentry": {
+                "dsn": "https://ee4d35ff799f48d1a6ef58f8af6fdf6b@sentry.iobroker.net/169"
+            }
+        }
     },
     "native": {
         "apikey": "",
